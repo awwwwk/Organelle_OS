@@ -209,6 +209,30 @@ OSCdef( \OrganelleAudioLevel,
 	"/audioLevel"
 );
 
+MIDIdef.freeAll;
+MIDIIn.connectAll;
+
+MIDIdef.cc(\midiInFs,
+	{
+		arg val, num;
+		if(val>63,
+			{~footswitch.fs_hit(1);},
+			{~footswitch.fs_hit(0);}
+		);
+	},
+	64
+);
+
+MIDIdef.cc(\midiInAux,
+	{
+		arg val, num;
+		if(val>63,
+			{~aux.key_hit(0,1);},
+			{~aux.key_hit(0,0);}
+		);
+	},
+	25
+);
 
 // boot the server
 s.boot;
