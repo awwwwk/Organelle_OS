@@ -137,7 +137,7 @@ OSCdef( \OrganelleKeys,
 	{
 
 		arg msg, time, addr, recvPort;
-        // SC bug workaround 
+        // SC bug workaround
         s.makeBundle(0.003, {
 			if ( msg[1]>0,
 				{~notes.key_hit(msg[1],msg[2]);},
@@ -193,13 +193,18 @@ OSCdef( \OrganelleFootSwitch,
 OSCdef( \OrganelleAudioLevel,
 	{
 		arg msg, time, addr, recvPort;
-		var peakInL,peakInR,peakOutL,peakOutR;
+		var peakInL,peakInR,peakOutL,peakOutR,peaks;
 		peakInL = (msg[3] * 11).asInteger;
 		peakInR = (msg[5] * 11).asInteger;
 		peakOutL = (msg[7] * 11).asInteger;
 		peakOutR = (msg[9] * 11).asInteger;
+		peaks=0;
+		if(msg[3]>0.95,	{peaks = peaks + 1});
+		if(msg[5]>0.95, {peaks = peaks + (1 << 1)});
+		if(msg[7]>0.95,	{peaks = peaks + (1 << 2)});
+		if(msg[9]>0.95,	{peaks = peaks + (1 << 3)});
 
-		~motherHost.sendMsg("/oled/vumeter", peakInL,peakInR,peakOutL,peakOutR);
+		~motherHost.sendMsg("/oled/vumeter", peakInL,peakInR,peakOutL,peakOutR,peaks);
 	},
 	"/audioLevel"
 );
@@ -210,7 +215,7 @@ s.boot;
 s.doWhenBooted {
 	(
         Routine( {
-        // SC 3.9 bug in boot completion 
+        // SC 3.9 bug in boot completion
         1.wait;
 		~mainOut = ~mainOutDef.add.play;
 		~mainPatch.load;
