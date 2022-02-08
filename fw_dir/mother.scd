@@ -193,11 +193,11 @@ OSCdef( \OrganelleFootSwitch,
 OSCdef( \OrganelleAudioLevel,
 	{
 		arg msg, time, addr, recvPort;
-		var peakInL,peakInR,peakOutL,peakOutR,peaks;
-		peakInL = (msg[3] * 11).asInteger;
-		peakInR = (msg[5] * 11).asInteger;
-		peakOutL = (msg[7] * 11).asInteger;
-		peakOutR = (msg[9] * 11).asInteger;
+		var peakInL,peakInR,peakOutL,peakOutR,peaks,inScale=2,outScale=3;
+		peakInL = (msg[3] * inScale * 11).asInteger;
+		peakInR = (msg[5] * inScale * 11).asInteger;
+		peakOutL = (msg[7] * outScale * 11).asInteger;
+		peakOutR = (msg[9] * outScale * 11).asInteger;
 		peaks=0;
 		if(msg[3]>0.95,	{peaks = peaks + 1});
 		if(msg[5]>0.95, {peaks = peaks + (1 << 1)});
