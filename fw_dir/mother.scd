@@ -228,6 +228,14 @@ OSCdef( \OrganelleAudioLevel,
 MIDIdef.freeAll;
 MIDIIn.connectAll;
 
+MIDIdef.noteOn(\midiInNoteOn,
+	{
+		arg vel, key, ch;
+		[vel, key, ch].postln;
+		~notes.key_hit(key-59,vel);
+	}
+);
+
 MIDIdef.cc(\midiInFs,
 	{
 		arg val, num;
