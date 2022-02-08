@@ -59,19 +59,35 @@ not implemented yet
 // knobs callbacks
 ~knobs=();
 ~knobValues = [0,0,0,0,0,0];
+~knobLocks = [false,false,false,false,false,false];
 
 ~knobs[\knob_changed] = {
 	arg self, knob,val;
-	if(~knobValues[knob] != val,
+	if(~knobLocks[knob] == true,
 		{
-			~knobValues[knob] = val;
-			if(knob==4, {
-				~mainVolume = val;
-				~mainOut.set(\amp,~mainVolume);
-			});
+			if((~knobValues[knob] - val).abs < 0.0195,
+				{
+					~knobLocks[knob] = false;
+					~knobValues[knob] = val;
 
-			self.changed(\knob,knob,val);
-	});
+					self.changed(\knob,knob,val);
+				}
+			);
+
+		},
+		{
+			if(~knobValues[knob] != val,
+				{
+					~knobValues[knob] = val;
+					if(knob==4, {
+						~mainVolume = val;
+						~mainOut.set(\amp,~mainVolume);
+					});
+
+					self.changed(\knob,knob,val);
+			});
+		}
+	);
 };
 
 // expr is actually a 'knob', but we separate like PD
