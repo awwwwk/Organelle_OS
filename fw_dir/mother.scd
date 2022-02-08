@@ -244,6 +244,42 @@ MIDIdef.noteOff(\midiInNoteOff,
 	}
 );
 
+MIDIdef.cc(\midiInKnob0,
+	{
+		arg val;
+		~knobs.knob_changed(0,val.linlin(0,127,0,1));
+		~knobLocks[0] = true;
+	},
+	21
+);
+
+MIDIdef.cc(\midiInKnob1,
+	{
+		arg val;
+		~knobs.knob_changed(1,val.linlin(0,127,0,1));
+		~knobLocks[1] = true;
+	},
+	22
+);
+
+MIDIdef.cc(\midiInKnob2,
+	{
+		arg val;
+		~knobs.knob_changed(2,val.linlin(0,127,0,1));
+		~knobLocks[2] = true;
+	},
+	23
+);
+
+MIDIdef.cc(\midiInKnob3,
+	{
+		arg val;
+		~knobs.knob_changed(3,val.linlin(0,127,0,1));
+		~knobLocks[3] = true;
+		val.postln;
+	},
+	24
+);
 MIDIdef.cc(\midiInFs,
 	{
 		arg val, num;
