@@ -259,6 +259,7 @@ s.doWhenBooted {
         1.wait;
 		~mainOut = ~mainOutDef.add.play;
 		~mainPatch.load;
+		~mainOut.set(\amp,~mainVolume);
         }).play;
 	)
 };
